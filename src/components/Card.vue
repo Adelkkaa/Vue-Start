@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="bg-white relative border border-slate-300 rounded-3xl p-8 cursor-pointer">
+  <div class="bg-white relative border border-slate-300 rounded-3xl p-8 cursor-pointer transition hover:-translate-y-2 hover:shadow-xl">
     <img
       class="absolute top-8 left-8"
       :src="isFavorite ? '/like-2.svg' : '/like-1.svg'"
