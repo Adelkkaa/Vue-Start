@@ -26,7 +26,7 @@ provide('cart', {
 
 <template>
   <div class="w-4/5 m-auto min-h-[calc(100vh-3.5rem)] bg-white rounded-xl shadow-xl mt-14">
-    <Drawer v-if="drawerOpen" />
+    <Drawer v-model:drawerOpen="drawerOpen" />
     <Header @open-drawer="openDrawer" />
     <CardList />
   </div>
