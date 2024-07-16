@@ -1,19 +1,26 @@
 <script setup>
 import Card from './Card.vue'
 
+const { items } = defineProps({
+  items: Array
+})
+
 const onClickAdd = () => {
-    alert('Добавлено в корзину')
+  alert('Добавлено в корзину')
 }
 </script>
 
 <template>
-  <div class="p-10">
-    <h2 class="text-3xl font-bold mb-8">Все Кроссовки</h2>
-    <div class="grid grid-cols-4 gap-4">
-      <Card title="Мужские Кроссовки Nike Blazer Mid Suede" imageUrl="/sneakers/sneakers-1.jpg" :price="5000" :isFavorite="false" :isAdded="false" :onClickAdd="onClickAdd" />
-      <Card title="Мужские Кроссовки Nike Blazer Mid Suede" imageUrl="/sneakers/sneakers-1.jpg" :price="5000" :isFavorite="true" :isAdded="false" />
-      <Card title="Мужские Кроссовки Nike Blazer Mid Suede" imageUrl="/sneakers/sneakers-1.jpg" :price="5000" :isFavorite="false" :isAdded="true" />
-      <Card title="Мужские Кроссовки Nike Blazer Mid Suede" imageUrl="/sneakers/sneakers-1.jpg" :price="5000" :isFavorite="true" :isAdded="true" />
-    </div>
+  <div class="grid grid-cols-4 gap-4">
+    <Card
+      v-for="item in items"
+      :key="item.id"
+      :title="item.title"
+      :imageUrl="item.imageUrl"
+      :price="item.price"
+      :isFavorite="false"
+      :isAdded="false"
+      :onClickAdd="onClickAdd"
+    />
   </div>
 </template>
