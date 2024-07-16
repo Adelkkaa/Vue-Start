@@ -1,7 +1,7 @@
 <script setup>
+import { inject } from 'vue'
 import CartItem from './CartItem.vue'
-const cart = Array.from({length: 5}, (_, i) => ({id: i, price: 12900, imageUrl: '/sneakers/sneakers-1.jpg', title: 'Мужские Кроссовки Nike Blazer Mid Suede'}))
-
+const { cart, removeFromCart } = inject('cart')
 </script>
 
 <template>
@@ -12,6 +12,7 @@ const cart = Array.from({length: 5}, (_, i) => ({id: i, price: 12900, imageUrl: 
       :title="item.title"
       :price="item.price"
       :image-url="item.imageUrl"
+      @on-click-remove="() => removeFromCart(item)"
     />
   </div>
 </template>

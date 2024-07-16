@@ -29,7 +29,7 @@ defineProps({
         <span class="text-xs font-medium text-gray-500">Цена:</span>
         <p class="text-sm font-bold">{{ price }} руб.</p>
       </div>
-      <img @click="onClickAdd" :src="isAdded ? '/checked.svg' : '/plus.svg'" alt="plus" />
+      <img v-if="onClickAdd" @click="onClickAdd" :src="isAdded ? '/checked.svg' : '/plus.svg'" alt="plus" />
     </div>
   </div>
 </template>

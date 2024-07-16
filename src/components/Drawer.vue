@@ -1,15 +1,18 @@
 <script setup>
 import DrawerHead from './DrawerHead.vue'
 import CartItemList from './CartItemList.vue'
+import InfoBlock from './InfoBlock.vue'
+
 import { inject, ref } from 'vue'
 
 const buttonDisabled = ref(false)
 defineProps({
-  drawerOpen: Boolean
+  drawerOpen: Boolean,
+  totalPrice: Number,
+  vatPrice: Number
 })
 
 const { closeDrawer } = inject('cart')
-
 </script>
 
 <template>
@@ -41,18 +44,32 @@ const { closeDrawer } = inject('cart')
       class="fixed right-0 top-0 w-96 h-full bg-white p-8 transition-transform z-20"
     >
       <DrawerHead />
+       <div v-if="!totalPrice || orderId" class="flex h-full items-center">
+      <InfoBlock
+        v-if="!totalPrice && !orderId"
+        title="Корзина пустая"
+        description="Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+        image-url="/package-icon.png"
+      />
+      <InfoBlock
+        v-if="orderId"
+        title="Заказ оформлен!"
+        :description="`Ваш заказ #${orderId} скоро будет передан курьерской доставке`"
+        image-url="/order-success-icon.png"
+      />
+    </div>
       <CartItemList />
       <div class="flex flex-col gap-4 mt-7">
         <div class="flex gap-2">
           <span>Итого:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <b>12900 ₽</b>
+          <b>{{ totalPrice }} ₽</b>
         </div>
 
         <div class="flex gap-2">
           <span>Налог 5%:</span>
           <div class="flex-1 border-b border-dashed"></div>
-          <b>900 ₽</b>
+          <b>{{ vatPrice }} ₽</b>
         </div>
 
         <button
