@@ -1,5 +1,6 @@
 <script setup>
 defineProps({
+  id: Number,
   title: String,
   imageUrl: String,
   price: Number,
@@ -11,8 +12,12 @@ defineProps({
 </script>
 
 <template>
-  <div class="bg-white relative border border-slate-300 rounded-3xl p-8 cursor-pointer transition hover:-translate-y-2 hover:shadow-xl">
+  <div
+    class="bg-white relative border border-slate-300 rounded-3xl p-8 cursor-pointer transition hover:-translate-y-2 hover:shadow-xl"
+  >
     <img
+      v-if="onClickFavorite"
+      @click="onClickFavorite"
       class="absolute top-8 left-8"
       :src="isFavorite ? '/like-2.svg' : '/like-1.svg'"
       alt="card"

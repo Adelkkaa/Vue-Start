@@ -15,27 +15,78 @@ const filters = reactive({
   sortBy: 'title'
 })
 
+const fetchFavorites = async () => {
+  try {
+    const { data: favorites } = await axios.get(`https://644aef902bb172ce.mokky.dev/favorites`)
+
+    items.value = items.value.map((item) => {
+      const favorite = favorites.find((favorite) => favorite.item_id === item.id)
+
+      if (!favorite) {
+        return item
+      }
+
+      return {
+        ...item,
+        isFavorite: true,
+        favoriteId: favorite.id
+      }
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 const fetchItems = async () => {
   try {
-    const params =  {
-      sortBy: filters.sortBy,
-    };
+    const params = {
+      sortBy: filters.sortBy
+    }
 
     if (filters.searchQuery) {
       params.title = `*${filters.searchQuery}*`
     }
-    const { data } = await axios.get(
-      'https://644aef902bb172ce.mokky.dev/items', {
-        params
-      }
-    )
-    items.value = data
+    const { data } = await axios.get('https://644aef902bb172ce.mokky.dev/items', {
+      params
+    })
+    items.value = data.map((obj) => ({
+      ...obj,
+      isFavorite: false,
+      favoriteId: null,
+      isAdded: false
+    }))
   } catch (error) {
     console.log(error)
   }
 }
 
-onMounted(fetchItems)
+
+const addToFavorite = async (item) => {
+  try {
+    if (!item.isFavorite) {
+      const obj = {
+        item_id: item.id
+      }
+
+      item.isFavorite = true
+
+      const { data } = await axios.post(`https://644aef902bb172ce.mokky.dev/favorites`, obj)
+
+      item.favoriteId = data.id
+    } else {
+      item.isFavorite = false
+      await axios.delete(`https://644aef902bb172ce.mokky.dev/favorites/${item.favoriteId}`)
+      item.favoriteId = null
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+onMounted(async () => {
+  await fetchItems()
+  await fetchFavorites()
+})
 
 watch(filters, fetchItems)
 
@@ -89,7 +140,7 @@ provide('cart', {
           </div>
         </div>
       </div>
-      <CardList :items="items" />
+      <CardList :items="items" @add-to-favorite="addToFavorite" />
     </div>
   </div>
 </template>

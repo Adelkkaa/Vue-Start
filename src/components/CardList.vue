@@ -2,12 +2,11 @@
 import Card from './Card.vue'
 
 const { items } = defineProps({
-  items: Array
+  items: Array,
+  isFavorites: Boolean
 })
 
-const onClickAdd = () => {
-  alert('Добавлено в корзину')
-}
+const emit = defineEmits(['addToFavorite', 'addToCart'])
 </script>
 
 <template>
@@ -15,12 +14,13 @@ const onClickAdd = () => {
     <Card
       v-for="item in items"
       :key="item.id"
+      :id="item.id"
       :title="item.title"
       :imageUrl="item.imageUrl"
       :price="item.price"
-      :isFavorite="false"
-      :isAdded="false"
-      :onClickAdd="onClickAdd"
+      :isFavorite="item.isFavorite"
+      :isAdded="item.isAdded"
+      :onClickFavorite="isFavorites ? null : () => emit('addToFavorite', item)"
     />
   </div>
 </template>
